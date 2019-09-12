@@ -1,0 +1,94 @@
+
+#include<stdio.h>
+#include<iostream>
+#include <cstdlib>
+#include<ctime>
+#define FALSE 0
+#define TRUE 1
+
+using namespace std;
+const int SIZE=12;
+
+class Maze {
+	private:
+	char  M[SIZE][SIZE]; // array of random numbers
+	int size; // size of the array
+
+	public:
+	Maze();  // constructor
+	void read_maze();
+	int maze_traverse(int row, int col);
+	void display_maze();
+};
+
+int main() {
+	int i, j;
+	Maze  M;
+	
+	M.display_maze();
+	M.maze_traverse(2,0);
+	M.display_maze();
+}
+
+// constructor
+Maze::Maze() {
+	read_maze();
+}
+
+// constructor
+void Maze::read_maze() {
+	int i, j;
+
+	FILE* ifp;
+
+	ifp=fopen("maze.txt", "r");
+
+	for(i=0; i< SIZE; i++)
+	for(j=0; j< SIZE; j++)
+		fscanf(ifp, " %c ", &M[i][j]);
+}
+
+int Maze::maze_traverse(int row, int col) {
+	// return TRUE if at the end of the maze
+	if (M[row][col] == 'E') return TRUE;
+
+	// return FALSE if not at the end of the maze
+	if (M[row][col] > SIZE-1 || M[row][col] == 'S') return FALSE;
+
+	// mark + for part of the path
+	M[row][col] = '+';
+
+	// return TRUE if the path goes to the North
+	if (M[row-1][col] == TRUE) return TRUE;
+
+	// return TRUE if the path goes to the South
+	if (M[row+1][col] == TRUE) return TRUE;
+
+	// return TRUE if the path goes to the East
+	if (M[row][col+1] == TRUE) return TRUE;
+
+	// return TRUE if the path goes to the West
+	if (M[row][col-1] == TRUE) return TRUE;
+
+	// mark x for the wrong path
+	M[row][col] = 'x';
+
+	return FALSE;
+}
+
+void Maze::display_maze(){
+	int i, j;
+	
+	for(i=0; i<SIZE; i++) {
+	for(j=0; j< SIZE; j++)
+		printf("%c ", M[i][j]);
+		cout << endl;
+	}
+	cout << endl;
+}
+
+/*
+// Pause the console so it doesn't close (when running in Windows)
+cout << endl << endl << endl << endl << endl;
+system("pause");
+*/
